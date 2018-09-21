@@ -4,29 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>The Psychic Game Challenge</title>
 </head>
 <body>
 
 <!--Give your p tags IDs so that they can be displayed and manipulated in the Javascript-->
-<div>
+    <h1>The Psychic Game Challenge</h1>
     <p id="directions-text">Guess what letter I am thinking of. Press any key to begin!</p>
     <p id="wins-text">Wins</p>
     <p id="losses-text">Losses</p>
     <p id="guesses-remaining">Guesses Remaining</p>        
     <p id="guesses-so-far">Letters Guessed</p>
-</div>
-    <script>
+
+<!--This is where the Javascript Begins -->
+    <script type = "text/javascript">
+
     
-//Create Variables 
+//Create Variables we will need in later functions
 var wins = 0;
 var losses = 0;
 var guessesRemaining = 9;
+var letterToGuess = null;
 var guessesSoFar; [];
-// var randomLetter = 0;
 var alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l',
     'm','n','o','p','q','r','s','t','u','v','w','x','y','z'];
-var computerChoice = alphabet[Math.floor(Math.random() * alphabet.length)];
+var letters = ["a", "m", "v"];
+
 
 //Create a second set of variables that hold reference spot to the HTML where you want to display things 
 var directionsText = document.getElementById("directions-text");
@@ -38,7 +41,7 @@ var guessesSoFar = document.getElementById("guesses-so-far");
 //Creating an on key up event that fires off an action once a key is pressed
 //We want the computer to generate a random letter 
     document.onkeyup = function(event) {
-    
+
 var userGuess = event.key;
 
 
@@ -46,59 +49,32 @@ var userGuess = event.key;
     document.getElementById('wins-text').innerHTML = " Wins: " + wins;
     document.getElementById('losses-text').innerHTML = " Losses: " + losses;
     document.getElementById('guesses-remaining').innerHTML = " Guesses Remaining: " + guessesRemaining;
-    document.getElementById('guesses-so-far').innerHTML = " Letters Guessed: " + event.key + (", ");
-
-//Create a loop so that the computer continueously chooses a new letter.
-
-// for ( i = 0; i === computerChoice; i++);
-// console.log(computerChoice);
-        // if (guessesSoFar === computerChoice) {
-        //         wins++;
-        // }
-        //     else { 
-        //         guessesRemaining--;
-        //     }
-        // }
-
-//Condition statement executes the code for the 0 to change in the given variables if the condition is true. 
-    if (userGuess === computerChoice) {
-            wins++;
-        }
-        
-        else {
-            guessesRemaining--;
-        }
-
-        if (guessesRemaining === 0){
-            losses++
-        }
+    document.getElementById('guesses-so-far').innerHTML = " Letters Guessed: " + userGuess + (", ");
     }
 
-
-
-
-
-
-//  var guessesSoFar = document.getElementById("guesses-so-far");
-//     document.onkeyup = function(event) {
-//         guessesSoFar.innerHTML += event.key +(", ");
-//     }
-
-
-
+//This function ensures that the Letters Guessed show up in an inline string in HTML
+    var guessesSoFar = document.getElementById("guesses-so-far");
+    document.onkeyup = function(event) {
+        guessesSoFar.innerHTML += event.key + (", ");
+            
+//Condiitional Statement
+if (letters === letterToGuess) {
+    wins++;
+    document.querySelector("#wins-text").innerHTML = wins;
+    reset();
+   }
    
+if (guessesRemaining === 0) {
+    losses++;
+    document.querySelector("#losses-text").innerHTML = losses;
+    reset();
+}
+}
 
- //Hiding the first directions
- //directionsText.textContent = "";
+ 
 
- //New displayed text in HTML
 
-//   if (event.key === "Escape") {
-//         wins = 0;
-//         losses = 0;
-//         guessedLetters = 0;
-//     }
-// 
+
     
 </script>
     
