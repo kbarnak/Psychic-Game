@@ -24,58 +24,78 @@
 var wins = 0;
 var losses = 0;
 var guessesRemaining = 9;
-var letterToGuess = null;
-var guessesSoFar; [];
 var alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l',
     'm','n','o','p','q','r','s','t','u','v','w','x','y','z'];
-var letters = ["a", "m", "v"];
-
-
-//Create a second set of variables that hold reference spot to the HTML where you want to display things 
-var directionsText = document.getElementById("directions-text");
-var winsText = document.getElementById("wins-text");
-var lossesText = document.getElementById("losses-text");
-var guessesRemaining = document.getElementById("guesses-remaining");
-var guessesSoFar = document.getElementById("guesses-so-far");
+var computerChoice = alphabet[Math.floor(Math.random() * alphabet.length)];
+var letters = "";
+var firstKeyPress = true;
 
 //Creating an on key up event that fires off an action once a key is pressed
-//We want the computer to generate a random letter 
-    document.onkeyup = function(event) {
+document.onkeyup = function(event) {
 
-var userGuess = event.key;
+    //Create a variable that creates a user guess once a key is pressed
+    var userGuess = event.key;
 
+    //Create a variable flag that determines if the key pressed is a letter in the later created loop
+    var correctLetter = false;
 
-//Here we reference back to the second set of variables that redefined the p tags so that what shows up in the html updates as the user presses letter keys.
+    //Create a for loop to see is the key pressed is a letter in the array and not an integer or symbol/punctuation
+    for (var i = 0; i < alphabet.length; i++) {
+        if (userGuess === alphabet[i]) {
+            correctLetter = true;
+        }
+    }
+
+    //Check the flag. If lkey pressed is not a letter then eit the function until the next key press
+    if (correctLetter === false) {
+        return;
+    }
+
+    //Conditional statement checks if computer generated letter equals the user choice
+    //If so, following statements are executed and the game is reset to the next round 
+    //Console log is outside the function to find out what letter is being randomly selected by the computer
+    console.log(computerChoice);
+    if (computerChoice === userGuess) {
+        wins++;
+        guessesRemaining = 9;
+        firstKeyPress = true;
+        computerChoice = alphabet[Math.floor(Math.random() * alphabet.length)];
+        refreshScreen();
+        return;
+    }
+
+    //If previous function is false, guesses remaining goes down by 1
+    guessesRemaining--;
+
+    //Purpose of this conditional statement is to skip the "," before the guessed letter on the first key press
+    if (firstKeyPress === true) {
+        firstKeyPress = false;
+        letters = userGuess;
+    } else {
+        letters = letters + ", " + userGuess;
+    }
+
+    //When there are no more guesses remaining, the following statements are executed and the game is reset to the next round 
+    if (guessesRemaining === 0) {
+        losses++;
+        guessesRemaining = 9;
+        firstKeyPress = true;
+        computerChoice = alphabet[Math.floor(Math.random() * alphabet.length)];
+    }
+   
+    //Function called to refresh the screen once above statement are satisfied
+    refreshScreen();
+}
+
+//Create a function that updates the HTML p tags. 
+function refreshScreen()
+{
     document.getElementById('wins-text').innerHTML = " Wins: " + wins;
     document.getElementById('losses-text').innerHTML = " Losses: " + losses;
     document.getElementById('guesses-remaining').innerHTML = " Guesses Remaining: " + guessesRemaining;
-    document.getElementById('guesses-so-far').innerHTML = " Letters Guessed: " + userGuess + (", ");
-    }
-
-//This function ensures that the Letters Guessed show up in an inline string in HTML
-    var guessesSoFar = document.getElementById("guesses-so-far");
-    document.onkeyup = function(event) {
-        guessesSoFar.innerHTML += event.key + (", ");
-            
-//Condiitional Statement
-if (letters === letterToGuess) {
-    wins++;
-    document.querySelector("#wins-text").innerHTML = wins;
-    reset();
-   }
-   
-if (guessesRemaining === 0) {
-    losses++;
-    document.querySelector("#losses-text").innerHTML = losses;
-    reset();
-}
+    document.getElementById('guesses-so-far').innerHTML = " Letters Guessed: " + letters;
 }
 
- 
-
-
-
-    
 </script>
     
 </body>
